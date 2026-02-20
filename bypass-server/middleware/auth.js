@@ -23,14 +23,21 @@ export async function verifyAuth(req, res, next) {
     const token = authHeader.substring(7)
     
     // Verify token with Supabase
-    const { data: { user }, error } = await supabase.auth.getUser(token)
+    // const { data: { user }, error } = await supabase.auth.getUser(token)
+
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('jwt_token', token);
+
+    console.log(data);
     
-    if (error || !user) {
+    if (error || !data || data.length === 0) {
       return res.status(401).json({ error: 'Invalid or expired token' })
     }
 
     // Attach user to request
-    req.user = user
+    req.user = data[0];
     next()
   } catch (error) {
     console.error('Auth middleware error:', error)

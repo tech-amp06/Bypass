@@ -23,7 +23,9 @@ export async function generateGemini(req, res) {
     })
 
     const result = await model.generateContent(prompt);
-    return result.response.text();
+    console.log(result.response, result.response.text());
+    const responseMessage = result.response.text();
+    return res.json({ message: responseMessage });
   } catch (err) {
     console.error('generateGemini error:', err)
     return res.status(500).json({ error: 'Failed to call Gemini', details: String(err) })

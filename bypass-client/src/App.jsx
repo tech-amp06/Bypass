@@ -39,6 +39,7 @@ const hideLayout =
             <Route path="/" element={<Auth />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/home" element={<Home />} />
           </Routes>
         </main>
       </div>
