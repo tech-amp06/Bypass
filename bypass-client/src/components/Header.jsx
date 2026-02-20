@@ -37,7 +37,7 @@ function Header() {
           rounded-full 
           shadow-2xl 
           flex items-center justify-center 
-          text-xl md:text-2xl 
+          text-xl md:text-2xl
           z-50 
           transition-transform duration-300 
           active:scale-90
