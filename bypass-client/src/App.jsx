@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Home from "./components/Home";
-import Profile from "./components/Profile";
+import Profile from "./components/profile/Profile";
 import Chat from "./components/Chat";
 
 function App() {
