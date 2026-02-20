@@ -8,7 +8,10 @@ import Chat from "./components/Chat";
 function App() {
   return (
     <div className="flex flex-col h-screen">
-      <Header />
+      <div className="shadow-xl z-100">
+        <Header />
+      </div>
+        
 
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />

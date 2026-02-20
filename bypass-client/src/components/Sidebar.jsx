@@ -5,7 +5,7 @@ function Sidebar() {
     <aside
       className="
         fixed bottom-0 left-0 w-full bg-white border-t shadow-md
-        flex flex-row justify-around py-4
+        flex flex-row justify-around py-4 border-gray-500
 
         md:static md:w-64 md:h-auto md:border-t-0 md:border-r
         md:flex-col md:justify-start md:p-6 md:gap-6

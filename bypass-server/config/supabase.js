@@ -6,7 +6,7 @@ import { dirname, join } from 'path'
 // Ensure dotenv is loaded (in case this module is imported before server.js loads it)
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-dotenv.config({ path: join(__dirname, '..', '..', '.env') })
+dotenv.config({ path: join(__dirname, '..', '.env') })
 
 const supabaseUrl = process.env.SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
