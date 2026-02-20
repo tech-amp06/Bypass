@@ -17,15 +17,13 @@ export async function generateGemini(req, res) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey)
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-2.5-flash',
+      systemInstruction: 'You are a medical assistant helping resolve queries of recently discharged patients. Do not remember any conversation, only respond based on the context provided.'
+    })
 
     const result = await model.generateContent(prompt);
     return result.response.text();
-
-    // result.response.text() may be async or sync depending on SDK; await to be safe
-    // const text = typeof result.response.text === 'function' ? result.response.text() : String(result.response)
-
-    return res.json({ text })
   } catch (err) {
     console.error('generateGemini error:', err)
     return res.status(500).json({ error: 'Failed to call Gemini', details: String(err) })
