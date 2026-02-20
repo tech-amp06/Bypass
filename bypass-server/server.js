@@ -16,6 +16,7 @@ dotenv.config({ path: join(__dirname, '..', '.env') })
 import { connectMongoDB } from './config/database.js'
 import './config/supabase.js' // Initialize Supabase client after dotenv
 import symptomRoutes from './routes/symptomRoutes.js'
+import multimodalRoutes from './routes/multimodalRoutes.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -25,7 +26,7 @@ connectMongoDB()
 
 // Middleware
 app.use(cors())
-app.use(express.json({ limit: '10mb' }))
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Rate limiting
@@ -42,6 +43,7 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use('/api/symptoms', symptomRoutes)
+app.use('/api/multimodal', multimodalRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
