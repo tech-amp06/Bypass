@@ -1,35 +1,23 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
-import dotenv from 'dotenv'
+// server/controllers/gemini.js
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-dotenv.config()
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Handler that calls Gemini and returns the generated text.
-// Accepts JSON body: { prompt?: string }
-export async function generateGemini(req, res) {
-  try {
-    const apiKey = process.env.GEMINI_API_KEY
-    if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY missing on server' })
+const model = genAI.getGenerativeModel({ 
+  model: 'gemini-2.0-flash', // Corrected stable model
+  systemInstruction: `You are a surgical triage assistant. Your goal is to identify symptoms that match specific post-operative threats. 
+  For Cardiac surgery: focus on chest pain and shortness of breath (Predicting Heart Failure). 
+  For General surgery: focus on redness and fever (Predicting Sepsis). 
+  Analyze the patient text and return a standardized symptom name from this list: chest_pain, shortness_of_breath, fever, wound_redness, joint_swelling.`
+});
 
-    const prompt = req.body && req.body.message;
-
-    if (!prompt) {
-      return res.status(400).json({ error: "Prompt required" });
+// Fixed: Pure JavaScript default export
+export default async function generateGemini(req, res) {
+    try {
+        const { message } = req.body;
+        const result = await model.generateContent(message);
+        return res.status(200).json({ text: result.response.text() });
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
     }
-
-    const genAI = new GoogleGenerativeAI(apiKey)
-    const model = genAI.getGenerativeModel({ 
-      model: 'gemini-2.5-flash',
-      systemInstruction: 'You are a medical assistant helping resolve queries of recently discharged patients. Do not remember any conversation, only respond based on the context provided.'
-    })
-
-    const result = await model.generateContent(prompt);
-    console.log(result.response, result.response.text());
-    const responseMessage = result.response.text();
-    return res.json({ message: responseMessage });
-  } catch (err) {
-    console.error('generateGemini error:', err)
-    return res.status(500).json({ error: 'Failed to call Gemini', details: String(err) })
-  }
 }
-
-export default generateGemini
