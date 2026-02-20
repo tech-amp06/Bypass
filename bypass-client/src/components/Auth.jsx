@@ -1,55 +1,54 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { verifyUser } from "../apis/authUser";
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 function Auth() {
   const [isSignup, setIsSignup] = useState(false);
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+
+  const verifyCredentials = async (credentials) => {
+    const response = await verifyUser(credentials);
+
+    if (response) {
+      localStorage.setItem('username', response.user_name);
+      localStorage.setItem('token', response.token);
+      navigate('/home');
+    } else {
+      toast.error("Incorrect credentials!");
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 px-4">
       
       <div className="bg-white w-full max-w-md p-8 rounded-3xl shadow-xl">
-        
-        {/* Title */}
         <div className="mb-6">
-            {/* Project Title */}
           <h1 className="text-4xl sm:text-5xl font-extrabold text-center text-gray-900">
             Bypass
         </h1>
-        {/* Login / Signup Subheading */}
         <p className="mt-4 text-center text-2xl sm:text-2xl font-bold text-green-700">
         {isSignup ? "Sign Up" : "Login"}
         </p>
         </div>
 
-        {/* Form */}
-        <form className="space-y-5">
-          
-          {/* Username */}
+        <form className="space-y-5" onSubmit={handleSubmit(async (credentials) => {
+          verifyCredentials(credentials);
+        })}>
           <div>
             <label className="block text-gray-600 mb-2 text-sm">
-              Username
+              Email
             </label>
             <input
-              type="text"
-              placeholder="Enter username"
+              type="email"
+              placeholder="Enter email"
               className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register('email')}
             />
           </div>
 
-          {/* Email (only for signup) */}
-          {isSignup && (
-            <div>
-              <label className="block text-gray-600 mb-2 text-sm">
-                Email
-              </label>
-              <input
-                type="email"
-                placeholder="Enter email"
-                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          )}
-
-          {/* Password */}
           <div>
             <label className="block text-gray-600 mb-2 text-sm">
               Password
@@ -58,10 +57,10 @@ function Auth() {
               type="password"
               placeholder="Enter password"
               className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register('password')}
             />
           </div>
 
-          {/* Button */}
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-full transition duration-300"
@@ -89,6 +88,8 @@ function Auth() {
 
         </form>
       </div>
+
+      <ToastContainer autoClose={2000} position="top-right" className="toast-container"  />
     </div>
   );
 }

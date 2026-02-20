@@ -1,21 +1,13 @@
-import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL;
-const PORT = import.meta.env.VITE_PORT;
+import client from './axiosClient'
 
 export const sendQuery = async (message) => {
   try {
-    console.log(`${API_URL}:${PORT}/gemini`, message);
-    
-    const response = await axios.post(`${API_URL}:${PORT}/api/multimodal/gemini`, { message });
-
-    console.log(response.data);
-    if (response.text) {
-      return response.text;
-    } else {
-      return null;
-    }
+    const response = await client.post('/api/multimodal/gemini', { message })
+    // controller returns { text }
+    if (response?.data?.text) return response.data.text
+    return response.data
   } catch (error) {
-    console.log(error);
+    console.error('sendQuery error:', error?.response?.data || error.message || error)
+    throw error
   }
 }
