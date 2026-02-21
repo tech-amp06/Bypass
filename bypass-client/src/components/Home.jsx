@@ -1,41 +1,38 @@
+import QuickVitalsForm from "./vitals/QuickVitalsForm";
+
 function Home() {
+  const username = localStorage.getItem('username') || 'Patient';
+
   return (
-    <div className="space-y-8">
-      <h2 className="text-3xl font-bold">Good Afternoon, {localStorage.getItem('username')}</h2>
+    <div className="space-y-8 p-4 md:p-0">
+      <header>
+        <h2 className="text-3xl font-black text-slate-900">
+          Welcome, <span className="text-blue-600">{username}</span>
+        </h2>
+      </header>
 
-      {/* Medication Card */}
-      <div className="bg-white p-6 rounded-2xl shadow-md flex justify-between items-center">
-        <div>
-          <p className="text-gray-500">Next Medication</p>
-          <h3 className="text-2xl font-semibold">2:00 PM</h3>
-          <p className="text-gray-600">Lisinopril 10mg</p>
+      <div className="grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-white border border-slate-200 p-8 rounded-[2rem] shadow-sm">
+            <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mb-2">Daily Goal</p>
+            <h3 className="text-2xl font-bold text-slate-900">Complete 15 min Walking</h3>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white border border-slate-100 p-6 rounded-3xl shadow-sm text-center">
+              <p className="text-4xl font-black text-blue-600">14</p>
+              <p className="text-slate-400 font-bold text-[10px] uppercase">Days Post-Op</p>
+            </div>
+            <div className="bg-white border border-slate-100 p-6 rounded-3xl shadow-sm text-center">
+              <p className="text-4xl font-black text-emerald-500">Stable</p>
+              <p className="text-slate-400 font-bold text-[10px] uppercase">Condition</p>
+            </div>
+          </div>
         </div>
 
-        <button className="text-white px-6 py-3 rounded-full hover:bg-blue-700 bg-blue-600">
-          Mark as Taken
-        </button>
-      </div>
-
-      {/* Status */}
-      <div className="bg-green-50 border border-green-200 p-6 rounded-2xl">
-        <p className="text-green-700 font-semibold">
-          Recovery Status: Stable
-        </p>
-        <p className="text-gray-500">
-          All vitals are within normal range
-        </p>
-      </div>
-
-      {/* Desktop Grid */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow-md">
-          <h3 className="font-semibold mb-2">Days Since Discharge</h3>
-          <p className="text-4xl font-bold text-blue-600">14</p>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl shadow-md">
-          <h3 className="font-semibold mb-2">Medication Adherence</h3>
-          <p className="text-4xl font-bold text-green-600">95%</p>
+        {/* This is where the error usually triggers if the import is wrong */}
+        <div className="lg:col-span-1">
+          <QuickVitalsForm />
         </div>
       </div>
     </div>

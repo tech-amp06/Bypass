@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #f8fafc;
+    --foreground: #0f172a;
+    --primary: #2563eb;
+    --border: #e2e8f0;
+  }
+  body {
+    @apply bg-[var(--background)] text-[var(--foreground)] antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}

@@ -10,12 +10,17 @@ export const verifyUser = async ({ email, password }) => {
       password
     });
 
-    if (response.status === 200) {
+    if (response.status === 200 && response.data) {
+      const { user_name, token, id } = response.data;
+      localStorage.setItem('username', user_name);
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', id);
       return response.data;
     } else {
       return null;
     }
   } catch (error) {
     console.log(error);
+    return null;
   }
 }
